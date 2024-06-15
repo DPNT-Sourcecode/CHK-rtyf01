@@ -1,6 +1,5 @@
 from collections import Counter
 import sys
-from typing import type
 
 # keys are the SKUs and the values are the prices.
 # Each price is a tuple of (quantity, total_price), sorted in descending order of quantity.
@@ -44,15 +43,15 @@ free_items = [
     ("U", 4, "U"),
 ]
 
-type GroupDiscount = type[tuple[str, int, int]]
+# a few type aliases for clarity
+SKU = str
+ItemsCount = Counter[SKU]
+GroupDiscount = tuple[str, int, int]
+
 group_discounts: list[GroupDiscount] = [
     # (skus, quantity, pack_price)
     ("STXYZ", 3, 45)
 ]
-
-# a couple of type aliases for clarity
-type SKU = str
-type ItemsCount = Counter[SKU]
 
 
 def product_subtotal(product_sku: SKU, count: int) -> int:
@@ -116,7 +115,7 @@ def handle_group_discount(
     )
     # we take as many as possible of the most expensive items in order to maximize the discount
     n_packs = len(sorted_candidates) // per_pack
-    used = sorted_candidates[: n_packs * per_pack]
+    used = sorted_candidates[: (n_packs * per_pack)]
     return (items - Counter(used), n_packs * pack_price)
 
 
@@ -143,6 +142,3 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
-
-
-
