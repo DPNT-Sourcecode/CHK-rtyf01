@@ -18,3 +18,7 @@ class TestSum:
     def test_interspersed_skus_with_offer(self):
         # 130 AAA offer + 30 B
         assert checkout_solution.checkout("AABA") == 160
+
+    def test_invalid_sku(self):
+        assert checkout_solution.checkout("E") == -1
+

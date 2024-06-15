@@ -28,21 +28,23 @@ def product_subtotal(product_sku: str, count: int) -> int:
     current_offer = next(pricelist_iterator)
     while remaining > 0:
         (per_pack, pack_price) = current_offer
-        print(
-            "per_pack: ",
-            per_pack,
-            "pack_price: ",
-            pack_price,
-            "remaining: ",
-            remaining,
-            "total: ",
-            total,
-        )
+        # print(
+        #     "sku: ",
+        #     product_sku,
+        #     "per_pack: ",
+        #     per_pack,
+        #     "pack_price: ",
+        #     pack_price,
+        #     "remaining: ",
+        #     remaining,
+        #     "total: ",
+        #     total,
+        # )
         if per_pack > remaining:
             current_offer = next(pricelist_iterator)
             continue
         n_packs = remaining // per_pack
-        total += per_pack * n_packs
+        total += n_packs * pack_price
         remaining -= n_packs * per_pack
     return total
 
@@ -50,5 +52,9 @@ def product_subtotal(product_sku: str, count: int) -> int:
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus: str) -> int:
+    products_by_sku = Counter(skus)
+    if set(products_by_sku.keys()) - catalogue:
+        return -1
     return sum([product_subtotal(sku, count) for (sku, count) in Counter(skus).items()])
+
 
