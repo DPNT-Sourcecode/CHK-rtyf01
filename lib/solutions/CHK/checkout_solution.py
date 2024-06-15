@@ -43,6 +43,11 @@ free_items = [
     ("U", 4, "U"),
 ]
 
+group_discounts = [
+    # (skus, quantity, pack_price)
+    ("STXYZ", 3, 45)
+]
+
 
 def product_subtotal(product_sku: str, count: int) -> int:
     """
@@ -85,6 +90,13 @@ def remove_free_items(all_items_counter: Counter) -> Counter:
     return all_items_counter - free_items_counter
 
 
+def handle_group_discounts(nonfree_items: Counter) -> tuple[Counter, int]:
+    # we rely on the skus in the group discounts not having or interacting with any other offer type,
+    # which makes calculations easier as we can just consider each group independently
+    # and adopt a simple heuristic: we choose all the most expensive products to
+    return (nonfree_items, 0)
+
+
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus: str) -> int:
@@ -98,4 +110,5 @@ def checkout(skus: str) -> int:
             for (sku, count) in nonfree_products_by_sku.items()
         ]
     )
+
 
