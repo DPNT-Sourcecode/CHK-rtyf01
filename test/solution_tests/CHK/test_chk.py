@@ -4,7 +4,9 @@ from solutions.CHK import checkout_solution
 
 
 def shuffle_string(s: str) -> str:
-    return "".join(random.shuffle(list(s)))
+    items = list(s)
+    random.shuffle(items)
+    return "".join(items)
 
 
 class TestSum:
@@ -81,11 +83,15 @@ class TestSum:
         assert checkout_solution.checkout("U" * 8) == 240
 
     def test_huge_purchase(self):
-        purchase = ("V" * 6 + "U" * 4 + "R" * 3 + "Q" * 4 + "A" * 4).shuffle()
-        assert (
-            checkout_solution.checkout()
-            == 130 + 90 + 50 + 40 * 3 + 50 * 3 + 80 + 130 + 50
+        purchase = shuffle_string("V" * 6 + "U" * 4 + "R" * 3 + "Q" * 4 + "A" * 4)
+        assert checkout_solution.checkout(purchase) == (
+            (130 + 90 + 50)  # 3V + 2V + 1V
+            + (40 * 3)  # 1U * 3, one free
+            + (50 * 3)  # 1R * 3
+            + 80  # 3Q + 1Q free from R
+            + (130 + 50)  # 3A + 1A
         )
+
 
 
 
