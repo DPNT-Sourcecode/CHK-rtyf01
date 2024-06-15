@@ -92,3 +92,17 @@ class TestSum:
             + (130 + 50)  # 3A + 1A
         )
 
+    def test_group_discount_simple(self):
+        assert checkout_solution.checkout("XYZ") == 45
+        assert checkout_solution.checkout("XXX") == 45
+        assert checkout_solution.checkout("STS") == 45
+
+    def test_group_discount_multiple(self):
+        assert checkout_solution.checkout("XYZZST") == 90
+        assert checkout_solution.checkout("XXXXXX") == 45
+
+    def test_group_discount_with_leftovers(self):
+        # it should take the most expensive skus in the group discount
+        assert checkout_solution.checkout("YXZZX") == 79
+
+
