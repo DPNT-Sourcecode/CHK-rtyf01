@@ -85,16 +85,9 @@ class TestSum:
     def test_huge_purchase(self):
         purchase = shuffle_string("V" * 6 + "U" * 4 + "R" * 3 + "Q" * 4 + "A" * 4)
         assert checkout_solution.checkout(purchase) == (
-            (130 + 90 + 50)  # 3V + 2V + 1V
+            (130 * 2)  # 3V * 2
             + (40 * 3)  # 1U * 3, one free
             + (50 * 3)  # 1R * 3
             + 80  # 3Q + 1Q free from R
             + (130 + 50)  # 3A + 1A
         )
-
-
-
-
-
-
-

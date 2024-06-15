@@ -1,4 +1,5 @@
 from collections import Counter
+import sys
 
 # keys are the SKUs and the values are the prices.
 # Each price is a tuple of (quantity, total_price), sorted in descending order of quantity.
@@ -71,6 +72,7 @@ def product_subtotal(product_sku: str, count: int) -> int:
         n_packs = remaining // per_pack
         total += n_packs * pack_price
         remaining -= n_packs * per_pack
+    print(f"product_subtotal({product_sku}, {count}) = {total}", file=sys.stderr)
     return total
 
 
@@ -96,6 +98,3 @@ def checkout(skus: str) -> int:
             for (sku, count) in nonfree_products_by_sku.items()
         ]
     )
-
-
-
