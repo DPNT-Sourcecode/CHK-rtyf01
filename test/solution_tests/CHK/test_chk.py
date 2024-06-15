@@ -104,5 +104,3 @@ class TestSum:
     def test_group_discount_with_leftovers(self):
         # it should take the most expensive skus in the group discount
         assert checkout_solution.checkout("YXZZX") == 79
-
-
