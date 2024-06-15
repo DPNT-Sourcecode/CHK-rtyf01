@@ -31,3 +31,7 @@ class TestSum:
 
     def test_free_item_disrupting_b_offer(self):
         assert checkout_solution.checkout("BBEE") == 110
+
+    def test_offer_combination(self):
+        assert checkout_solution.checkout("A" * 9) == 200 + 130 + 50
+

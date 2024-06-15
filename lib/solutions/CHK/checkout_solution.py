@@ -1,5 +1,4 @@
 from collections import Counter
-import functools
 
 # keys are the SKUs and the values are the prices.
 # Each price is a tuple of (quantity, total_price), sorted in descending order of quantity.
@@ -34,18 +33,6 @@ def product_subtotal(product_sku: str, count: int) -> int:
     current_offer = next(pricelist_iterator)
     while remaining > 0:
         (per_pack, pack_price) = current_offer
-        # print(
-        #     "sku: ",
-        #     product_sku,
-        #     "per_pack: ",
-        #     per_pack,
-        #     "pack_price: ",
-        #     pack_price,
-        #     "remaining: ",
-        #     remaining,
-        #     "total: ",
-        #     total,
-        # )
         if per_pack > remaining:
             current_offer = next(pricelist_iterator)
             continue
@@ -71,5 +58,6 @@ def checkout(skus: str) -> int:
     return sum(
         [product_subtotal(sku, count) for (sku, count) in products_by_sku.items()]
     )
+
 
 
