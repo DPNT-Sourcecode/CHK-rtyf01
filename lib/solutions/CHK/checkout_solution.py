@@ -41,5 +41,3 @@ def product_subtotal(product_sku: str, count: int) -> int:
 # skus = unicode string
 def checkout(skus: str) -> int:
     return sum([product_subtotal(sku, count) for (sku, count) in Counter(skus)])
-
-
