@@ -62,6 +62,3 @@ def checkout(skus: str) -> int:
     if set(products_by_sku.keys()) - catalogue:
         return -1
     return sum([product_subtotal(sku, count) for (sku, count) in Counter(skus).items()])
-
-
-

@@ -26,5 +26,8 @@ class TestSum:
         # 4A: 3A (130) + A (50) = 180
         assert checkout_solution.checkout("A" * 4) == 180
 
+    def test_free_item(self):
+        assert checkout_solution.checkout("EEB") == 80
 
-
+    def test_free_item_disrupting_b_offer(self):
+        assert checkout_solution.checkout("BBEE") == 110
