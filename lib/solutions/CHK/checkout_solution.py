@@ -90,6 +90,7 @@ def remove_free_items(cart: ItemsCount) -> ItemsCount:
     free_items = Counter()
     for required_item, required_quantity, free_item in free_items:
         free_items[free_item] = cart.get(required_item, 0) // required_quantity
+    print("Cart: ", cart, file=sys.stderr)
     print("Removed free items:", free_items, file=sys.stderr)
     return cart - free_items
 
@@ -147,6 +148,7 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
+
 
 
 
