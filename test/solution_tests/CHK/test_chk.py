@@ -1,4 +1,10 @@
+import random
+
 from solutions.CHK import checkout_solution
+
+
+def shuffle_string(s: str) -> str:
+    return "".join(random.shuffle(list(s)))
 
 
 class TestSum:
@@ -75,10 +81,12 @@ class TestSum:
         assert checkout_solution.checkout("U" * 8) == 240
 
     def test_huge_purchase(self):
+        purchase = ("V" * 6 + "U" * 4 + "R" * 3 + "Q" * 4 + "A" * 4).shuffle()
         assert (
-            checkout_solution.checkout("V" * 6 + "U" * 4 + "R" * 3 + "Q" * 4 + "A" * 4)
+            checkout_solution.checkout()
             == 130 + 90 + 50 + 40 * 3 + 50 * 3 + 80 + 130 + 50
         )
+
 
 
 
