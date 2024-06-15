@@ -1,5 +1,6 @@
 from collections import Counter
 import sys
+from typing import type
 
 # keys are the SKUs and the values are the prices.
 # Each price is a tuple of (quantity, total_price), sorted in descending order of quantity.
@@ -43,14 +44,18 @@ free_items = [
     ("U", 4, "U"),
 ]
 
-type GroupDiscount = tuple[str, int, int]
+type GroupDiscount = type[tuple[str, int, int]]
 group_discounts: list[GroupDiscount] = [
     # (skus, quantity, pack_price)
     ("STXYZ", 3, 45)
 ]
 
+# a couple of type aliases for clarity
+type SKU = str
+type ItemsCount = Counter[SKU]
 
-def product_subtotal(product_sku: str, count: int) -> int:
+
+def product_subtotal(product_sku: SKU, count: int) -> int:
     """
     Returns the total price for 'count' items of product with SKU 'sku'.
     """
@@ -82,18 +87,16 @@ def product_subtotal(product_sku: str, count: int) -> int:
     return total
 
 
-def remove_free_items(all_items_counter: Counter) -> Counter:
-    free_items_counter = Counter()
+def remove_free_items(cart: ItemsCount) -> ItemsCount:
+    free_items = Counter()
     for required_item, required_quantity, free_item in free_items:
-        free_items_counter[free_item] = (
-            all_items_counter.get(required_item, 0) // required_quantity
-        )
-    return all_items_counter - free_items_counter
+        free_items[free_item] = cart.get(required_item, 0) // required_quantity
+    return cart - free_items
 
 
 def handle_group_discount(
-    items: Counter, group_discount: GroupDiscount
-) -> tuple[Counter, int]:
+    items: ItemsCount, group_discount: GroupDiscount
+) -> tuple[ItemsCount, int]:
     """
     Handles a specific group discount for a purchase.
 
@@ -120,7 +123,7 @@ def handle_group_discount(
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus: str) -> int:
-    items = Counter(skus)
+    items: ItemsCount = Counter(skus)
     if set(items.keys()) - catalogue:
         return -1
 
@@ -140,5 +143,6 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
+
 
 
