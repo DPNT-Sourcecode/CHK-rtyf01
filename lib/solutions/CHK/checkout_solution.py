@@ -58,6 +58,9 @@ def product_subtotal(product_sku: str, count: int) -> int:
     #       * two bundles of 3A (130 * 2) -> 260
     #       * one bundle of 5A (200) + one individual A (90) ->  290
     #       so it would be cheaper to skip the largest offer
+    # I assume this is part of the
+    # "All the offers are well balanced so that they can be safely combined."
+    # constraint. (though I am veryfing such cases manually anyway)
     pricelist_iterator = iter(prices[product_sku])
     current_offer = next(pricelist_iterator)
     while remaining > 0:
@@ -93,5 +96,6 @@ def checkout(skus: str) -> int:
             for (sku, count) in nonfree_products_by_sku.items()
         ]
     )
+
 
 

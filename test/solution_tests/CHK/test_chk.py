@@ -42,7 +42,7 @@ class TestSum:
         assert checkout_solution.checkout("AABA") == 160
 
     def test_invalid_sku(self):
-        assert checkout_solution.checkout("Z") == -1
+        assert checkout_solution.checkout("z") == -1
 
     def test_offer_plus_extras(self):
         # 4A: 3A (130) + A (50) = 180
@@ -64,4 +64,5 @@ class TestSum:
         # weird case, as the customer could've bought one extra F for the same total
         assert checkout_solution.checkout("FFFFF") == 40
         assert checkout_solution.checkout("FFFFFF") == 40
+
 
