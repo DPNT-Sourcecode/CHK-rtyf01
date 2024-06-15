@@ -14,8 +14,6 @@ prices = {
 # set of valid SKUs
 catalogue = set(prices.keys())
 
-free_items = 
-
 
 def product_subtotal(product_sku: str, count: int) -> int:
     """
@@ -56,9 +54,10 @@ def product_subtotal(product_sku: str, count: int) -> int:
         remaining -= n_packs * per_pack
     return total
 
+
 def remove_free_items(counter: Counter) -> Counter:
     free_bs = counter.get("E", 0) // 2
-    return counter - Counter(b=free_bs)
+    return counter - Counter({"B": free_bs})
 
 
 # noinspection PyUnusedLocal
@@ -68,5 +67,9 @@ def checkout(skus: str) -> int:
     if set(products_by_sku.keys()) - catalogue:
         return -1
     products_by_sku = remove_free_items(products_by_sku)
-    return sum([product_subtotal(sku, count) for (sku, count) in Counter(skus).items()])
+    print(products_by_sku)
+    return sum(
+        [product_subtotal(sku, count) for (sku, count) in products_by_sku.items()]
+    )
+
 
