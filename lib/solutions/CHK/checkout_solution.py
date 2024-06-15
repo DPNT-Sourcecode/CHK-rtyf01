@@ -43,7 +43,8 @@ free_items = [
     ("U", 4, "U"),
 ]
 
-group_discounts = [
+type GroupDiscount = tuple[str, int, int]
+group_discounts: list[GroupDiscount] = [
     # (skus, quantity, pack_price)
     ("STXYZ", 3, 45)
 ]
@@ -90,44 +91,54 @@ def remove_free_items(all_items_counter: Counter) -> Counter:
     return all_items_counter - free_items_counter
 
 
-def group_discount(items: Counter) -> tuple[Counter, int]:
+def handle_group_discount(
+    items: Counter, group_discount: GroupDiscount
+) -> tuple[Counter, int]:
     """
-    Returns an updated counter where, and the total price of the items in the group discount
+    Handles a specific group discount for a purchase.
+
+    Given a Counter of items to calculate the total for, and a specific GroupDiscount definition,
+    it tries to assign as many expensive items as possible to the group discount,
+    and returns the updated Counter of remaining items and the total price of the group discount.
     """
+    (skus, per_pack, pack_price) = group_discount
     # the next line exploits Counter intersection to build a counter of just the group skus,
-    # with the quantity of each sku coming from the nonfree_items counter
-    group_items = nonfree_items & Counter({sku: sys.maxsize for sku in skus})
+    # with the quantity of each sku coming from the items counter
+    group_items = items & Counter({sku: sys.maxsize for sku in skus})
     # we sort all the items in the group by price, descending
     # (again we rely on group discount skus not belonging to any other offers and thus having only
     # a single price in the price list)
-    sorted_candidates = sorted(group_items.elements(), key=lambda sku: prices[sku][0][1], reverse=True)
+    sorted_candidates = sorted(
+        group_items.elements(), key=lambda sku: prices[sku][0][1], reverse=True
+    )
     # we take as many as possible of the most expensive items in order to maximize the discount
     n_packs = len(sorted_candidates) // per_pack
-    used = sorted_candidates[:n_packs * per_pack]
-
-
-def handle_group_discounts(nonfree_items: Counter) -> tuple[Counter, int]:
-    # we rely on the skus in the group discounts not having or interacting with any other offer type,
-    # which makes calculations easier as we can just consider each group independently
-    # and adopt a simple heuristic: we choose all the most expensive products to
-    # We also assume that
-    remaining_items = nonfree_items.copy()
-    groups_total
-    for skus, per_pack, pack_price in group_discounts:
-    return (nonfree_items, 0)
+    used = sorted_candidates[: n_packs * per_pack]
+    return (items - Counter(used), n_packs * pack_price)
 
 
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus: str) -> int:
-    products_by_sku = Counter(skus)
-    if set(products_by_sku.keys()) - catalogue:
+    items = Counter(skus)
+    if set(items.keys()) - catalogue:
         return -1
-    nonfree_products_by_sku = remove_free_items(products_by_sku)
-    return sum(
-        [
-            product_subtotal(sku, count)
-            for (sku, count) in nonfree_products_by_sku.items()
-        ]
-    )
+
+    total = 0
+    # remove items that come from free thanks to some other items offer
+    items = remove_free_items(items)
+    # handle group discounts first (luckily they don't interact with other offers)
+    # we rely on the skus in the group discounts not having or interacting with any other offer type,
+    # which makes calculations easier as we can just consider each group independently
+    # and adopt a simple heuristic: assign as many expensive items as possible to the group discount
+    for group_discount in group_discounts:
+        (remaining_items, group_discount_total) = handle_group_discount(
+            items, group_discount
+        )
+        total += group_discount_total
+        items = remaining_items
+    for sku, count in items.items():
+        total += product_subtotal(sku, count)
+    return total
+
 
