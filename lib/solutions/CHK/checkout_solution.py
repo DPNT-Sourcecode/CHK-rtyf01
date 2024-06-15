@@ -1,9 +1,14 @@
 from collections import Counter
 import sys
 
+# a few type aliases for clarity
+SKU = str
+ItemsCount = Counter[SKU]
+GroupDiscount = tuple[str, int, int]
+
 # keys are the SKUs and the values are the prices.
 # Each price is a tuple of (quantity, total_price), sorted in descending order of quantity.
-prices = {
+PRICELIST = {
     "A": [(5, 200), (3, 130), (1, 50)],
     "B": [(2, 45), (1, 30)],
     "C": [(1, 20)],
@@ -33,9 +38,9 @@ prices = {
 }
 
 # set of valid SKUs
-catalogue = set(prices.keys())
+SKU_CATALOGUE = set(PRICELIST.keys())
 
-free_items = [
+FREE_ITEM_OFFERS = [
     ("E", 2, "B"),
     ("F", 3, "F"),
     ("N", 3, "M"),
@@ -43,12 +48,7 @@ free_items = [
     ("U", 4, "U"),
 ]
 
-# a few type aliases for clarity
-SKU = str
-ItemsCount = Counter[SKU]
-GroupDiscount = tuple[str, int, int]
-
-group_discounts: list[GroupDiscount] = [
+GROUP_DISCOUNT_OFFERS: list[GroupDiscount] = [
     # (skus, quantity, pack_price)
     ("STXYZ", 3, 45)
 ]
@@ -72,7 +72,7 @@ def product_subtotal(product_sku: SKU, count: int) -> int:
     # I assume this is part of the
     # "All the offers are well balanced so that they can be safely combined."
     # constraint. (though I am veryfing such cases manually anyway)
-    pricelist_iterator = iter(prices[product_sku])
+    pricelist_iterator = iter(PRICELIST[product_sku])
     current_offer = next(pricelist_iterator)
     while remaining > 0:
         (per_pack, pack_price) = current_offer
@@ -88,8 +88,10 @@ def product_subtotal(product_sku: SKU, count: int) -> int:
 
 def remove_free_items(cart: ItemsCount) -> ItemsCount:
     free_items = Counter()
-    for required_item, required_quantity, free_item in free_items:
-        free_items[free_item] = cart.get(required_item, 0) // required_quantity
+    for required_item, required_quantity, free_product in FREE_ITEM_OFFERS:
+        print(cart.get(required_item, 0))
+        print(required_quantity)
+        free_items[free_product] = cart.get(required_item, 0) // required_quantity
     print("Cart: ", cart, file=sys.stderr)
     print("Removed free items:", free_items, file=sys.stderr)
     return cart - free_items
@@ -113,7 +115,7 @@ def handle_group_discount(
     # (again we rely on group discount skus not belonging to any other offers and thus having only
     # a single price in the price list)
     sorted_candidates = sorted(
-        group_items.elements(), key=lambda sku: prices[sku][0][1], reverse=True
+        group_items.elements(), key=lambda sku: PRICELIST[sku][0][1], reverse=True
     )
     # we take as many as possible of the most expensive items in order to maximize the discount
     n_packs = len(sorted_candidates) // per_pack
@@ -129,7 +131,7 @@ def handle_group_discount(
 # skus = unicode string
 def checkout(skus: str) -> int:
     items: ItemsCount = Counter(skus)
-    if set(items.keys()) - catalogue:
+    if set(items.keys()) - SKU_CATALOGUE:
         return -1
 
     total = 0
@@ -139,7 +141,7 @@ def checkout(skus: str) -> int:
     # we rely on the skus in the group discounts not having or interacting with any other offer type,
     # which makes calculations easier as we can just consider each group independently
     # and adopt a simple heuristic: assign as many expensive items as possible to the group discount
-    for group_discount in group_discounts:
+    for group_discount in GROUP_DISCOUNT_OFFERS:
         (remaining_items, group_discount_total) = handle_group_discount(
             items, group_discount
         )
@@ -148,6 +150,7 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
+
 
 
 
