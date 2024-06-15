@@ -7,6 +7,28 @@ class TestSum:
         assert checkout_solution.checkout("B") == 30
         assert checkout_solution.checkout("C") == 20
         assert checkout_solution.checkout("D") == 15
+        assert checkout_solution.checkout("E") == 40
+        assert checkout_solution.checkout("F") == 10
+        assert checkout_solution.checkout("G") == 20
+        assert checkout_solution.checkout("H") == 10
+        assert checkout_solution.checkout("I") == 35
+        assert checkout_solution.checkout("J") == 60
+        assert checkout_solution.checkout("K") == 80
+        assert checkout_solution.checkout("L") == 90
+        assert checkout_solution.checkout("M") == 15
+        assert checkout_solution.checkout("N") == 40
+        assert checkout_solution.checkout("O") == 10
+        assert checkout_solution.checkout("P") == 50
+        assert checkout_solution.checkout("Q") == 30
+        assert checkout_solution.checkout("R") == 50
+        assert checkout_solution.checkout("S") == 30
+        assert checkout_solution.checkout("T") == 20
+        assert checkout_solution.checkout("U") == 40
+        assert checkout_solution.checkout("V") == 50
+        assert checkout_solution.checkout("W") == 20
+        assert checkout_solution.checkout("X") == 90
+        assert checkout_solution.checkout("Y") == 10
+        assert checkout_solution.checkout("Z") == 50
 
     def test_simple_offers(self):
         assert checkout_solution.checkout("AAA") == 130
@@ -42,3 +64,4 @@ class TestSum:
         # weird case, as the customer could've bought one extra F for the same total
         assert checkout_solution.checkout("FFFFF") == 40
         assert checkout_solution.checkout("FFFFFF") == 40
+

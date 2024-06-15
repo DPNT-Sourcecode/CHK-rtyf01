@@ -17,6 +17,18 @@ prices = {
     "L": [(1, 90)],
     "M": [(1, 15)],
     "N": [(1, 40)],
+    "O": [(1, 10)],
+    "P": [(5, 200), (1, 50)],
+    "Q": [(3, 80), (1, 30)],
+    "R": [(1, 50)],
+    "S": [(1, 30)],
+    "T": [(1, 20)],
+    "U": [(1, 40)],
+    "V": [(3, 130), (2, 90), (1, 50)],
+    "W": [(1, 20)],
+    "X": [(1, 90)],
+    "Y": [(1, 10)],
+    "Z": [(1, 50)],
 }
 
 # set of valid SKUs
@@ -59,13 +71,13 @@ def product_subtotal(product_sku: str, count: int) -> int:
     return total
 
 
-def remove_free_items(counter: Counter) -> Counter:
+def remove_free_items(all_items_counter: Counter) -> Counter:
     free_items_counter = Counter()
     for required_item, required_quantity, free_item in free_items:
         free_items_counter[free_item] = (
-            counter.get(required_item, 0) // required_quantity
+            all_items_counter.get(required_item, 0) // required_quantity
         )
-    return counter - free_items_counter
+    return all_items_counter - free_items_counter
 
 
 # noinspection PyUnusedLocal
@@ -81,4 +93,5 @@ def checkout(skus: str) -> int:
             for (sku, count) in nonfree_products_by_sku.items()
         ]
     )
+
 
