@@ -35,3 +35,12 @@ class TestSum:
     def test_offer_combination(self):
         assert checkout_solution.checkout("A" * 9) == 200 + 130 + 50
 
+    def test_buy_two_get_one_free(self):
+        assert checkout_solution.checkout("FF") == 20
+        assert checkout_solution.checkout("FFF") == 20
+        assert checkout_solution.checkout("FFFF") == 30
+        # weird case, as the customer could've bought one extra F for the same total
+        assert checkout_solution.checkout("FFFFF") == 40
+        assert checkout_solution.checkout("FFFFFF") == 40
+
+
