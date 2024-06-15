@@ -94,6 +94,9 @@ def handle_group_discounts(nonfree_items: Counter) -> tuple[Counter, int]:
     # we rely on the skus in the group discounts not having or interacting with any other offer type,
     # which makes calculations easier as we can just consider each group independently
     # and adopt a simple heuristic: we choose all the most expensive products to
+    # We also assume that
+    for skus, quantity, pack_price in group_discounts:
+        pass
     return (nonfree_items, 0)
 
 
@@ -110,5 +113,6 @@ def checkout(skus: str) -> int:
             for (sku, count) in nonfree_products_by_sku.items()
         ]
     )
+
 
 
