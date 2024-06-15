@@ -74,6 +74,13 @@ class TestSum:
         assert checkout_solution.checkout("U" * 5) == 160
         assert checkout_solution.checkout("U" * 8) == 240
 
+    def test_huge_purchase(self):
+        assert (
+            checkout_solution.checkout("V" * 6 + "U" * 4 + "R" * 3 + "Q" * 4 + "A" * 4)
+            == 130 + 90 + 50 + 40 * 3 + 50 * 3 + 80 + 130 + 50
+        )
+
+
 
 
 
