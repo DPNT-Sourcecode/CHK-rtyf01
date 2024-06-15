@@ -51,6 +51,7 @@ class TestSum:
     def test_free_item(self):
         assert checkout_solution.checkout("EEB") == 80
         assert checkout_solution.checkout("QRRR") == 150
+        assert checkout_solution.checkout("N" * 6 + "M" * 2) == 40 * 6
 
     def test_free_item_disrupting_another_offer(self):
         assert checkout_solution.checkout("BBEE") == 110
@@ -68,9 +69,11 @@ class TestSum:
         assert checkout_solution.checkout("FFFFFF") == 40
 
     def test_buy_three_get_one_free(self):
-        assert checkout_solution.checkout("UUU") == 120
-        assert checkout_solution.checkout("UUUU") == 120
-        assert checkout_solution.checkout("UUUU") == 160
+        assert checkout_solution.checkout("U" * 3) == 120
+        assert checkout_solution.checkout("U" * 4) == 120
+        assert checkout_solution.checkout("U" * 5) == 160
+        assert checkout_solution.checkout("U" * 8) == 240
+
 
 
 
