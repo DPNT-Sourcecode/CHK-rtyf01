@@ -22,3 +22,8 @@ class TestSum:
     def test_invalid_sku(self):
         assert checkout_solution.checkout("E") == -1
 
+    def test_combined_offers(self):
+        # 7A: 3A (130) + 3A (130) + A (50) = 310
+        assert checkout_solution.checkout("A" * 7) == 310
+
+
