@@ -29,14 +29,14 @@ class TestSum:
         assert checkout_solution.checkout("P") == 50
         assert checkout_solution.checkout("Q") == 30
         assert checkout_solution.checkout("R") == 50
-        assert checkout_solution.checkout("S") == 30
+        assert checkout_solution.checkout("S") == 20
         assert checkout_solution.checkout("T") == 20
         assert checkout_solution.checkout("U") == 40
         assert checkout_solution.checkout("V") == 50
         assert checkout_solution.checkout("W") == 20
-        assert checkout_solution.checkout("X") == 90
-        assert checkout_solution.checkout("Y") == 10
-        assert checkout_solution.checkout("Z") == 50
+        assert checkout_solution.checkout("X") == 17
+        assert checkout_solution.checkout("Y") == 20
+        assert checkout_solution.checkout("Z") == 21
 
     def test_simple_offers(self):
         assert checkout_solution.checkout("AAA") == 130
@@ -99,8 +99,9 @@ class TestSum:
 
     def test_group_discount_multiple(self):
         assert checkout_solution.checkout("XYZZST") == 90
-        assert checkout_solution.checkout("XXXXXX") == 45
+        assert checkout_solution.checkout("XXXXXX") == 90
 
     def test_group_discount_with_leftovers(self):
         # it should take the most expensive skus in the group discount
         assert checkout_solution.checkout("YXZZX") == 79
+

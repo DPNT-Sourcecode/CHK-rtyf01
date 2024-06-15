@@ -22,14 +22,14 @@ prices = {
     "P": [(5, 200), (1, 50)],
     "Q": [(3, 80), (1, 30)],
     "R": [(1, 50)],
-    "S": [(1, 30)],
+    "S": [(1, 20)],
     "T": [(1, 20)],
     "U": [(1, 40)],
     "V": [(3, 130), (2, 90), (1, 50)],
     "W": [(1, 20)],
-    "X": [(1, 90)],
-    "Y": [(1, 10)],
-    "Z": [(1, 50)],
+    "X": [(1, 17)],
+    "Y": [(1, 20)],
+    "Z": [(1, 21)],
 }
 
 # set of valid SKUs
@@ -117,7 +117,7 @@ def handle_group_discount(
     n_packs = len(sorted_candidates) // per_pack
     used = sorted_candidates[: (n_packs * per_pack)]
     print(
-        f"GroupDiscount {group_discount}: used {used} for a subtotal of {n_packs * pack_price}",
+        f"GroupDiscount {group_discount}: used {used} for a subtotal of {n_packs * pack_price} (candidates were {sorted_candidates})",
         file=sys.stderr,
     )
     return (items - Counter(used), n_packs * pack_price)
@@ -146,4 +146,5 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
+
 
