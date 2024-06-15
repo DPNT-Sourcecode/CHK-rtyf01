@@ -82,18 +82,15 @@ def product_subtotal(product_sku: SKU, count: int) -> int:
         n_packs = remaining // per_pack
         total += n_packs * pack_price
         remaining -= n_packs * per_pack
-    print(f"product_subtotal({product_sku}, {count}) = {total}", file=sys.stderr)
+    # print(f"product_subtotal({product_sku}, {count}) = {total}", file=sys.stderr)
     return total
 
 
 def remove_free_items(cart: ItemsCount) -> ItemsCount:
     free_items = Counter()
-    for required_item, required_quantity, free_product in FREE_ITEM_OFFERS:
-        print(cart.get(required_item, 0))
-        print(required_quantity)
-        free_items[free_product] = cart.get(required_item, 0) // required_quantity
-    print("Cart: ", cart, file=sys.stderr)
-    print("Removed free items:", free_items, file=sys.stderr)
+    for required_product, required_quantity, free_product in FREE_ITEM_OFFERS:
+        free_items[free_product] = cart.get(required_product, 0) // required_quantity
+    # print("Removed free items:", free_items, file=sys.stderr)
     return cart - free_items
 
 
@@ -120,10 +117,10 @@ def handle_group_discount(
     # we take as many as possible of the most expensive items in order to maximize the discount
     n_packs = len(sorted_candidates) // per_pack
     used = sorted_candidates[: (n_packs * per_pack)]
-    print(
-        f"GroupDiscount {group_discount}: used {used} for a subtotal of {n_packs * pack_price} (candidates were {sorted_candidates})",
-        file=sys.stderr,
-    )
+    # print(
+    #     f"GroupDiscount {group_discount}: used {used} for a subtotal of {n_packs * pack_price} (candidates were {sorted_candidates})",
+    #     file=sys.stderr,
+    # )
     return (items - Counter(used), n_packs * pack_price)
 
 
@@ -150,6 +147,7 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
+
 
 
 
