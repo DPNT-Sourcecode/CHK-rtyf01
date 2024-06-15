@@ -50,9 +50,11 @@ class TestSum:
 
     def test_free_item(self):
         assert checkout_solution.checkout("EEB") == 80
+        assert checkout_solution.checkout("QRRR") == 150
 
-    def test_free_item_disrupting_b_offer(self):
+    def test_free_item_disrupting_another_offer(self):
         assert checkout_solution.checkout("BBEE") == 110
+        assert checkout_solution.checkout("QQQRRR") == 210
 
     def test_offer_combination(self):
         assert checkout_solution.checkout("A" * 9) == 200 + 130 + 50
@@ -64,5 +66,11 @@ class TestSum:
         # weird case, as the customer could've bought one extra F for the same total
         assert checkout_solution.checkout("FFFFF") == 40
         assert checkout_solution.checkout("FFFFFF") == 40
+
+    def test_buy_three_get_one_free(self):
+        assert checkout_solution.checkout("UUU") == 120
+        assert checkout_solution.checkout("UUUU") == 120
+        assert checkout_solution.checkout("UUUU") == 160
+
 
 
