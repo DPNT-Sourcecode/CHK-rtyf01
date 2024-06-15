@@ -21,7 +21,7 @@ class TestSum:
         assert checkout_solution.checkout("H") == 10
         assert checkout_solution.checkout("I") == 35
         assert checkout_solution.checkout("J") == 60
-        assert checkout_solution.checkout("K") == 80
+        assert checkout_solution.checkout("K") == 70
         assert checkout_solution.checkout("L") == 90
         assert checkout_solution.checkout("M") == 15
         assert checkout_solution.checkout("N") == 40
@@ -91,3 +91,4 @@ class TestSum:
             + 80  # 3Q + 1Q free from R
             + (130 + 50)  # 3A + 1A
         )
+
