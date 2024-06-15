@@ -116,6 +116,10 @@ def handle_group_discount(
     # we take as many as possible of the most expensive items in order to maximize the discount
     n_packs = len(sorted_candidates) // per_pack
     used = sorted_candidates[: (n_packs * per_pack)]
+    print(
+        f"GroupDiscount {group_discount}: used {used} for a subtotal of {n_packs * pack_price}",
+        file=sys.stderr,
+    )
     return (items - Counter(used), n_packs * pack_price)
 
 
@@ -142,3 +146,4 @@ def checkout(skus: str) -> int:
     for sku, count in items.items():
         total += product_subtotal(sku, count)
     return total
+
