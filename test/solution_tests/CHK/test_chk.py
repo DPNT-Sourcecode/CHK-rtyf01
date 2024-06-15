@@ -42,5 +42,3 @@ class TestSum:
         # weird case, as the customer could've bought one extra F for the same total
         assert checkout_solution.checkout("FFFFF") == 40
         assert checkout_solution.checkout("FFFFFF") == 40
-
-
